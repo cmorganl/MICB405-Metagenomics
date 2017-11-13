@@ -40,9 +40,7 @@ __References__ (>20)
 Necessary citations include:
 1. Each software used
 2. Data papers
-
-Bonus 1: Meta-analysis of metagenome assembly and/or binning
-
-Bonus 2: Pre-prints from any server you like!
+3. Bonus a) Meta-analysis of metagenome assembly and/or binning
+4. Bonus b) Pre-prints from any server you like!
 
 ### This strucure is should serve as a scaffold for your Group. How you expand on it will depend on the interests and analyses of your Group!
