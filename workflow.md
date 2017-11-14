@@ -1,6 +1,10 @@
 # MICB405-Metagenomics
 A metagenome annotation workflow for UBC's MICB405 Microbial Bioinformatics course
 
+### Data
+
+FASTQ files are located on the orca server in `/home/micb405/data/project_2/`. These are the subsetted FASTQ files (32 million reads per file) mentioned in the README. These data should __not be copied__ to your individual or group directories. 
+
 ### Metagenome assembly
 
 There are numerous genome assembly software tools available but just a handful that are commonly used to assemble metagenomes. The one we will be using is MEGAHIT due to its memory-efficiency [succinct de Buijn graph](https://link.springer.com/chapter/10.1007/978-3-642-33122-0_18) (data structure used to store and tranverse k-mers), rapid assembly algorithms, and high-quality results. As we learned during the first project, the server has its RAM and CPU limitations so we will be using just 2 threads, and limiting the amount of RAM to 1/14th of the total memory:
@@ -23,6 +27,8 @@ perl5.26.0 /home/cmlang/bin/MaxBin-2.2.4/run_MaxBin.pl
 ```
 
 Using the default parameters will work, but again certain parameters can be tuned to change the quality and number of bins generated. For this step, please __limit the number of threads to 2__. For information on how to use the software and its outputs, refer to the [README](https://downloads.jbei.org/data/microbial_communities/MaxBin/README.txt) and the help statement.
+
+__Note:__ 'bin', 'MAG', and 'population genome' are all synonymous and are therefore used interchangably.
 
 ### checkM
 
@@ -64,28 +70,35 @@ SI072_LV_185m.Bin002 | Unknown
 
 [Prokka](https://academic.oup.com/bioinformatics/article-lookup/doi/10.1093/bioinformatics/btu153) is a popular microbial genome annotation tool. It is able to rapidly annotate genomes (1-10 minutes) using custom databases and generates a variety of useful outputs. From these annotations, your group will reconstruct metabolism.
 
+__To focus your enthusiasm we will be investigating the [nitrogen-cycle](http://www.genome.jp/kegg-bin/show_pathway?map=map00910&show_description=show) in Saanich Inlet.__
+
 Genes that guide your analyses are:
 Gene | Protein 
 ---- | ------------------------
-napA |.
-narG |.
-nifD |.
-nifH |.
-nirA |.
-nirB |.
-nirK |.
-nirS |.
-norB |.
-norC |.
-nosZ |.
-nrfA |.
-nxrB |.
-amoA |.
-hzo  |.
-hao  |.
+napA | Periplasmic nitrate reductase NapA
+narG | Nitrate reductase / nitrite oxidoreductase, alpha subunit 
+nifD | Nitrogenase molybdenum-iron protein alpha chain
+nifH | Nitrogenase iron protein NifH
+nirA | Ferredoxin-nitrite reductase
+nirB | Nitrite reductase (NADH) large subunit
+nirK | Nitrite reductase (NO-forming)
+nirS | Nitrite reductase (NO-forming) / hydroxylamine reductase 
+norB | Nitric oxide reductase, subunit B
+norC | Nitric oxide reductase, subunit C
+nosZ | Nitrous-oxide reductase
+nrfA | Nitrite reductase (Cytochrome c-552)
+nxrB | Nitrite oxidoreductase, subunit B
+amoA | Ammonia monooxygenase, subunit A
+hzo  | Hydrazine oxidase
+hao  | Hydroxylamine oxidoreductase
 
+As a fail-safe, we have included the Kyoto Encyclopedia of Genes and Genomes (KEGG) database in `/home/micb405/resources/project_2` which can also be used to annotate your genomes using an alignment tool such as LAST.
 
-__To focus your enthusiasm we will be investigating the nitrogen-cycle in Saanich Inlet.__
+### Abundance estimation
+
+At this point, you know which bins are high quality (i.e. low contamination and high completeness) and you know which bins have which genes involved in the nitrogen cycle. From here it would be interesting to learn what the abundance of these genomes are in the environment. This inform us of the scale as to which each organism is involved in cycling nitrogen in the Saanich Inlet water column. To estimate abundance, we map the reads back to the contigs using a short read aligner such as `bwa`. At this point it would be 
+
+Normalization is required at this point to 
 
 ### Timeline
 
