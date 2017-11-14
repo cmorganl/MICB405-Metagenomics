@@ -97,10 +97,45 @@ As a fail-safe, we have included the Kyoto Encyclopedia of Genes and Genomes (KE
 
 ### Abundance estimation
 
-At this point, you know which bins are high quality (i.e. low contamination and high completeness) and you know which bins have which genes involved in the nitrogen cycle. From here it would be interesting to learn what the abundance of these genomes are in the environment. This inform us of the scale as to which each organism is involved in cycling nitrogen in the Saanich Inlet water column. To estimate abundance, we map the reads back to the contigs using a short read aligner such as `bwa`. At this point it would be 
+At this point, you know which bins are high quality (i.e. low contamination and high completeness) and you know which bins have which genes involved in the nitrogen cycle. From here it would be interesting to learn what the abundance of these genomes are in the environment. This informs the scale as to which each organism is potentially involved in cycling nitrogen in the Saanich Inlet water column. To estimate abundance, we map the reads back to the contigs using a short read aligner such as `bwa`. At this point it would be a good idea to ensure you understand why we can use the reads to estimate abundance of genes, contigs, or whole genomes.
 
-Normalization is required at this point to 
+Normalization is required at this point to account for variance in sequencing coverage (though, this is already accomplished by sub-sampling *in silico*) and sequence lengths. Very simply, longer sequences garner more read alignments. To do this, we use [RPKM](https://www.nature.com/articles/nmeth.1226), a method that was first introduced in analyzing RNA-Seq data. The executable for this is in `/home/micb405/resources/project_2/rpkm`.
+
+### Figure generation and other analyses
+
+Many of the suggested figures can be generated in R (using ggplot2!). If your group is interested in a specific visualization or analysis, for example using [Phylosift](https://phylosift.wordpress.com/) or [Metapathways](https://github.com/hallamlab/metapathways2), let Connor know.
 
 ### Timeline
 
 __Gantt__
+
+```mermaid
+%% Example with slection of syntaxes
+        gantt
+        dateFormat  YYYY-MM-DD
+        title Adding GANTT diagram functionality to mermaid
+
+        section A section
+        Completed task            :done,    des1, 2014-01-06,2014-01-08
+        Active task               :active,  des2, 2014-01-09, 3d
+        Future task               :         des3, after des2, 5d
+        Future task2               :         des4, after des3, 5d
+
+        section Critical tasks
+        Completed task in the critical line :crit, done, 2014-01-06,24h
+        Implement parser and jison          :crit, done, after des1, 2d
+        Create tests for parser             :crit, active, 3d
+        Future task in critical line        :crit, 5d
+        Create tests for renderer           :2d
+        Add to mermaid                      :1d
+
+        section Documentation
+        Describe gantt syntax               :active, a1, after des1, 3d
+        Add gantt diagram to demo page      :after a1  , 20h
+        Add another diagram to demo page    :doc1, after a1  , 48h
+
+        section Last section
+        Describe gantt syntax               :after doc1, 3d
+        Add gantt diagram to demo page      : 20h
+        Add another diagram to demo page    : 48h
+```
