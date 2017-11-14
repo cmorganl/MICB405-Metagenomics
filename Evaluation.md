@@ -18,12 +18,12 @@ __Methods__ (750 words)
  - Explain any potential deviations from the default parameters or the suggested workflow.
 
 __Results__ (1000 words)
- - Provide a summary of the assembly, binning, checkM, and MASH (or other taxonomic assigner) outputs, as well as those from other software, if applicable.
+ - Provide a summary of the assembly, binning, checkM, and Mash (or other taxonomic assigner) outputs, as well as those from other software, if applicable.
  - Report on the Prokka annotations such as rRNA predicted, # genes annotated, nitrogen-cycling gene annotations, and potential metabolisms of the top 10 bins.
  - Report the abundance of genes belonging to specific taxa used in nitrogen cycling pathways
 
 __Discussion__ (1000 words)
- - Describe the pros/cons of using a MASH (or more generally, genome-based taxonomic assigners) compared to taxonomic assignment software using marker-genes.
+ - Describe the pros/cons of using a Mash (or more generally, genome-based taxonomic assigners) compared to taxonomic assignment software using marker-genes.
  - State any challenges encountered (we know there will be some!) and troubleshooting (parameter or software changes) - briefly!
  - Relate the results back to the introduction and what is or is not sensical. For example, discuss how the biology relates to the geochemical state of the environment). How do the different population genome bins in your data set contribute to the nitrgoen cycle? Do they encode partial or complete pathways? How modular is the nitrogen cycle based on your data?
  - Additional questions worth pursuing further.

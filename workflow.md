@@ -53,11 +53,38 @@ Therefore, we must turn to alignment-based methods for querying marker genes (16
 
 By the end of this stage, the goal is to have a tabular file mapping a bin to a taxonomy, though there will invariably be some "Unknown"s. For example:
 
-
+Bin ID | Taxonomy
+-------------------- | -------------------------------------------
+SI072_LV_185m.Bin001 | Bacteria;Proteobacteria;Gammaproteobacteria
+SI072_LV_185m.Bin002 | Unknown
+. | .
+. | .
+. | .
 
 ### Genome annotation
 
-Prokka.
+[Prokka](https://academic.oup.com/bioinformatics/article-lookup/doi/10.1093/bioinformatics/btu153) is a popular microbial genome annotation tool. It is able to rapidly annotate genomes (1-10 minutes) using custom databases and generates a variety of useful outputs. From these annotations, your group will reconstruct metabolism.
+
+Genes that guide your analyses are:
+Gene | Protein 
+---- | ------------------------
+napA |.
+narG |.
+nifD |.
+nifH |.
+nirA |.
+nirB |.
+nirK |.
+nirS |.
+norB |.
+norC |.
+nosZ |.
+nrfA |.
+nxrB |.
+amoA |.
+hzo  |.
+hao  |.
+
 
 __To focus your enthusiasm we will be investigating the nitrogen-cycle in Saanich Inlet.__
 
