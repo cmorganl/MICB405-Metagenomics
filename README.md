@@ -1,11 +1,13 @@
 # MICB405-Metagenomics
-A metagenome annotation workflow for UBC's Microbiology 405 course (Bioinformatics)
+A metagenome annotation workflow for UBC's MICB405 Microbial Bioinformatics course 
 
 ## Outline
+ 
+Data used for this project is from Saanich Inlet, a seasonally-anoxic fjord on the coast of Vancoiver Island British Columbia that provides a model ecosystem for studying microbial commuity responses to ocean deoxygenation. These data are described further in the series of Scientific Data publications ([geochemical data](https://www.nature.com/articles/sdata2017159) and [multi-omic data](https://www.nature.com/articles/sdata2017160)). You can access these papers as well as additional background information on the study site and phenomenon of oxygen minimum zone expansion on Connect. 
 
-Data used for this project is from Saanich Inlet, a seasonally-anoxic fjord. These data are described further in the series of Scientific Data publications ([geochemical data](https://www.nature.com/articles/sdata2017159) and [multi-omic data](https://www.nature.com/articles/sdata2017160)). The goal of this workflow is to annotate metagenome-assembled genomes (MAGs) and reconstruct the nitrogen cycle through the water column. 
+The primary objective of this workflow is to annotate metagenome-assembled genomes (MAGs) and reconstruct the nitrogen cycle in relation to defined water column oxygen gradients in Saanich Inlet. 
 
-To begin, metagenome sequencing reads were downloaded for samples from August 2013 (cruise 72):
+To begin, metagenome sequencing reads were downloaded for samples sourced from different water column depths on August 2013 (cruise 72):
 ```
 SRR3719539
 SRR3719544
@@ -16,13 +18,13 @@ SRR3719654
 SRR3719564
 ```
 
-SRA-tools' `fastq-dump --split-files --gzip` was used to download each dataset from the Sequence Read archive (SRA). Due to time and resource limitations each FASTQ file was subsetted using the `head` command to 32 million reads, leaving 64 million reads for each sample. 32 million was selected since this was the number of reads contained for that sample with lowest coverage:
+SRA-tools' `fastq-dump --split-files --gzip` was used to download each dataset from the Sequence Read archive (SRA). Due to time and resource limitations each FASTQ file was subsetted using the `head` command to 32 million reads, leaving 64 million reads for each sample. The number 32 million was selected becasue this was the total number of reads in the sample with lowest coverage:
 ```
 SAMN05224519,SRR3719564,32004368,SI072_LV_200m_DNA
 ``` 
-Think of this subsetting as [rarefaction](https://en.wikipedia.org/wiki/Rarefaction_(ecology)).
+Think of this subsetting as [rarefaction](https://en.wikipedia.org/wiki/Rarefaction_(ecology)). Generally speaking though we would try and work with all the data in a primary research project focused on producing a more complete representation of microbial community structure and function. 
 
-Here is where the class takes over! The next step is to use [MEGAHIT](https://github.com/voutcn/megahit) to assemble the genomes, [MaxBin 2.0](https://sourceforge.net/projects/maxbin2/) to bin the genomes from metagenomes, [checkM](https://github.com/Ecogenomics/CheckM/wiki) to identify the best MAGs, [MASH](https://mash.readthedocs.io/en/latest/) to identify the closest genomic relative in RefSeq (i.e. assign taxonomy), and finally [Prokka](https://github.com/tseemann/prokka) to annotate the MAGs.
+Here is where the class takes over! The next step is to use [MEGAHIT](https://github.com/voutcn/megahit) to assemble the genomes, [MaxBin 2.0](https://sourceforge.net/projects/maxbin2/) to bin the genomes from metagenomes, [checkM](https://github.com/Ecogenomics/CheckM/wiki) to identify the best MAGs, [MASH](https://mash.readthedocs.io/en/latest/) to identify the closest genomic relative in RefSeq (i.e. assign taxonomy), and finally [Prokka](https://github.com/tseemann/prokka) to annotate the MAGs. These are just some of the tools that are available for metagenome analysis that were selected in part because they play nice on the server. 
 
 Recommended usage for each software is provided at [workflow.md](https://github.com/cmorganl/MICB405-Metagenomics/blob/master/workflow.md).
 
