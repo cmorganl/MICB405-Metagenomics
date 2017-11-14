@@ -3,7 +3,7 @@ A metagenome annotation workflow for UBC's MICB405 Microbial Bioinformatics cour
 
 ## Outline
  
-Data used for this project is from Saanich Inlet, a seasonally-anoxic fjord on the coast of Vancoiver Island British Columbia that provides a model ecosystem for studying microbial commuity responses to ocean deoxygenation. These data are described further in the series of Scientific Data publications ([geochemical data](https://www.nature.com/articles/sdata2017159) and [multi-omic data](https://www.nature.com/articles/sdata2017160)). You can access these papers as well as additional background information on the study site and phenomenon of oxygen minimum zone expansion on Connect. 
+Data used for this project is from Saanich Inlet, a seasonally-anoxic fjord on the coast of Vancouver Island British Columbia that provides a model ecosystem for studying microbial commuity responses to ocean deoxygenation. These data are described further in the series of Scientific Data publications ([geochemical data](https://www.nature.com/articles/sdata2017159) and [multi-omic data](https://www.nature.com/articles/sdata2017160)). You can access these papers as well as additional background information on the study site and phenomenon of oxygen minimum zone expansion on Connect. 
 
 The primary objective of this workflow is to annotate metagenome-assembled genomes (MAGs) and reconstruct the nitrogen cycle in relation to defined water column oxygen gradients in Saanich Inlet. 
 
