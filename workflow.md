@@ -59,7 +59,6 @@ SI072_LV_185m.Bin001 | Bacteria;Proteobacteria;Gammaproteobacteria
 SI072_LV_185m.Bin002 | Unknown
 . | .
 . | .
-. | .
 
 ### Genome annotation
 

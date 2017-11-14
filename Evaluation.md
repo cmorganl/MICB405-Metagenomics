@@ -13,7 +13,7 @@ __Introduction__ (750 words)
  - Provide relevant information regarding metagenomic approaches (data generation and application), pros, cons, and alternatives
 
 __Methods__ (750 words)
- - Reference the bash script(s) containing all commands. These are to be either hosted on a group member's GitHub page or emailed to Conn and I will upload them to my MICB405-Metagenomics GitHub page under `student_scripts/Group*/`.
+ - Reference the bash script(s) containing all commands. These are to be either hosted on a group member's GitHub page and/or emailed to Connor and I will upload them to the MICB405-Metagenomics GitHub page under `student_scripts/Group*/`.
  - Explain why each step was used, what the outputs are, etc. For example, metagenome assembly was used to build larger sequences (contigs) from the sequencing reads to reduce data size and redundancy, as well as inputs for binning. __Don't be silly and plagiarise this__.
  - Explain any potential deviations from the default parameters or the suggested workflow.
 
