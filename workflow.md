@@ -16,15 +16,17 @@ megahit -1 $FORWARD_READS -2 $REVERSE_READS \
 --out-dir /home/micb405/GroupX/project_2/MEGAHIT/SI072_LV_$DEPTH
 ```
 
-An astute observer would also see the minimum contig length threshold is set to 1000bp. This is because metagenomic binning (and other software) perform best with long contigs so I chose the arbitrary cut-off of 1000bp. There are plenty of other options worth playing with and optimizing (hint hint `--min-contig-len`) so if you end up testing more assemblies feel free to discuss this in your report! I just ask you to wait until all other groups have finished assembly and binning before you pin the server with many variations on a theme!
+An astute observer would also see the minimum contig length threshold is set to 1000bp. This is because metagenomic binning (and other software) perform best with long contigs so I chose the arbitrary cut-off of 1000bp. There are plenty of other options worth playing with and optimizing (hint hint `--min-count`) so if you end up testing more assemblies feel free to discuss this in your report! I just ask you to wait until all other groups have finished assembly and binning before you pin the server with many variations on a theme!
 
 ### Metagenomic binning
 
-Like assembly, there are a multiplicity of "binners" to choose from. However, one that has been shown to perform consistently better than its competition is MaxBin 2.0. Unlike most other software tools used in the course, MaxBin 2.0 was not pre-installed as part of ORCA's docker container. I've installed this in my *bin* directory (`/home/cmlang/bin/MaxBin-2.2.4/run_MaxBin.pl`) for everyone to use:
+Like assembly, there are a multiplicity of "binners" to choose from. However, one that has been shown to perform consistently better than its competition is MaxBin 2.0. Unlike most other software tools used in the course, MaxBin 2.0 was not pre-installed as part of ORCA's docker container. I've installed this in `/home/micb405/resources/project_2/MaxBin-2.2.4/` for everyone to use by:
 
 ```bash
-perl5.26.0 /home/cmlang/bin/MaxBin-2.2.4/run_MaxBin.pl
+perl5.26.0 /home/micb405/resources/project_2/MaxBin-2.2.4/run_MaxBin.pl
 ```
+
+__Note__: FragGeneScan, an open-reading frame (ORF) prediction tool, is not in your shell's path. You will need to include `/home/micb405/resources/project_2/FragGeneScan1.30` in your `$PATH`.
 
 Using the default parameters will work, but again certain parameters can be tuned to change the quality and number of bins generated. For this step, please __limit the number of threads to 2__. For information on how to use the software and its outputs, refer to the [README](https://downloads.jbei.org/data/microbial_communities/MaxBin/README.txt) and the help statement.
 
@@ -103,7 +105,7 @@ Normalization is required at this point to account for variance in sequencing co
 
 ### Figure generation and other analyses
 
-Many of the suggested figures can be generated in R (using ggplot2!). If your group is interested in a specific visualization or analysis, for example using [Phylosift](https://phylosift.wordpress.com/) or [Metapathways](https://github.com/hallamlab/metapathways2), let Connor know.
+Many of the suggested figures can be generated in R (using ggplot2!). If your group is interested in a specific visualization or analysis, for example using [Phylosift](https://phylosift.wordpress.com/), [EMIRGE](https://github.com/csmiller/EMIRGE), or [Metapathways](https://github.com/hallamlab/metapathways2), let Connor know.
 
 ### Timeline
 
@@ -112,4 +114,6 @@ Many of the suggested figures can be generated in R (using ggplot2!). If your gr
 3. checkM: 30-40 minutes
 4. MASH: 20-45 minutes
 5. Prokka: 1-2 hours
-6. Figure generation: Days :smiley:
+6. Figure generation: hours-days :smiley:
+
+Let's head over to the [evaluation markdown](https://github.com/cmorganl/MICB405-Metagenomics/blob/master/Evaluation.md).
