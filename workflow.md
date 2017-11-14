@@ -39,7 +39,21 @@ By the end of this stage, your group will have MAGs also known as population gen
 
 ### Taxonomic assignment
 
-Great, so now you have population genome bins but you have no idea what organisms they represent! We will *try* to change that condition here with the caveat that the extend of completion and the availability of known reference genomes are needed to make the most accurate assignments. There are a couple methods for doing this but one that is currently making positive waves is called [MASH](http://mash.readthedocs.io/en/latest/).
+Great, so now you have genomes but you have no idea what organisms they represent! We will *try* to change that condition here with the caveat that the extent of completion and the availability of known reference genomes are needed to make the most accurate assignments. There are a few methods for doing this but one that is currently making positive waves is an alignment-free method called [Mash](http://mash.readthedocs.io/en/latest/). Briefly, it leverages a reduced data representation called a MinHash sketch that represents a genome with an array of hashed k-mers of length S. This is then used to compare against the sketches of other genomes using the [Jaccard Index](https://en.wikipedia.org/wiki/Jaccard_index). Genomes which are very similar have many shared k-mer hashes within their sketch and will therefore have a Jaccard Index approaching 1. The original publication has derived a novel distance using MinHash sketches which is specifically for estimating the mutation rate between genomes. By determining the Mash distance between two genomes, their evolutionary relatedness can theoretically be inferred. For more information, refer to the [Mash publication](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-016-0997-x).
+
+Mash can be called using `mash`. There are several different functions within the master command. Your goal here is to compare your good bins to all genomes in RefSeq - a feat that would potentially require hours using alignment methods such as BLAST! The sketch of each genome is located in the file `/home/micb405/resources/project_2/refseq.genomes.k21s1000.msh`.
+
+```
+mash dist
+```
+
+Now, although RefSeq (a non-redundant database of all genomes in GenBank) is truly awesome with tens-of-thousands of genomes, we are still unable to assign relatives to many bins. Can you think of why? There are 91,282 sketches in the database we are using and that is *after* filtering out the redundant genomes! Yes, there was just shy of 10,000 *E. coli* genomes in there before... 
+
+Therefore, we must turn to alignment-based methods for querying marker genes (16s rRNA) from our MAGs against a different reference database, SILVA. A LAST-formatted database is `/micb405/resources/project_2/`. LAST is similar to BLAST but orders of magnitude faster.
+
+By the end of this stage, the goal is to have a tabular file mapping a bin to a taxonomy, though there will invariably be some "Unknown"s. For example:
+
+
 
 ### Genome annotation
 
