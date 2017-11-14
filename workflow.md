@@ -73,6 +73,7 @@ SI072_LV_185m.Bin002 | Unknown
 __To focus your enthusiasm we will be investigating the [nitrogen-cycle](http://www.genome.jp/kegg-bin/show_pathway?map=map00910&show_description=show) in Saanich Inlet.__
 
 Genes that guide your analyses are:
+
 Gene | Protein 
 ---- | ------------------------
 napA | Periplasmic nitrate reductase NapA
