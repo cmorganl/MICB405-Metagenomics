@@ -55,7 +55,7 @@ SI072_LV_150m | 11 | 83
 SI072_LV_165m | 23 | 118 
 SI072_LV_200m | 11 | 54 
 
-__Don't worry__ if your number do not match mine exactly!
+__Don't worry__ if your numbers do not match mine exactly!
 
 ### Taxonomic assignment
 
