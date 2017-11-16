@@ -19,7 +19,7 @@ __Methods__ (750 words)
 
 __Results__ (1000 words)
  - Provide a summary of the assembly, binning, checkM, and Mash (or other taxonomic assigner) outputs, as well as those from other software, if applicable.
- - Report on the Prokka annotations such as rRNA predicted, # genes annotated, nitrogen-cycling gene annotations, and potential metabolisms of the top 10 bins.
+ - Report on the Prokka annotations such as rRNA predicted, # genes annotated, nitrogen-cycling gene annotations, and potential metabolisms of the bins greater than 10% complete and less than 5% contaminated.
  - Report the abundance of genes belonging to specific taxa used in nitrogen cycling pathways
 
 __Discussion__ (1000 words)

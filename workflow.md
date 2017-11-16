@@ -43,7 +43,7 @@ checkm lineage_wf --tab_table -x .fasta --threads 4 --pplacer_threads 4 $BIN_DIR
 /mnt/nfs/sharknado/Connor_MICB405_sandbox/ProcessedData/checkM/Reference/$sid\_checkm_output/ >/mnt/nfs/sharknado/Connor_MICB405_sandbox/ProcessedData/checkM/Reference/$sid\_checkM_stdout.tsv
 ```
 
-By the end of this stage, your group will have MAGs also known as population genome bins for your metagenome and can easily separate the wheat from the chaff. You will probably be swimming in chaff so think hard about what contsitutes a good assemble [paper](http://www.nature.com/articles/nbt.3893).
+By the end of this stage, your group will have MAGs also known as population genome bins for your metagenome and can easily separate the wheat from the chaff. You will probably be swimming in chaff so think hard about what contsitutes a good assembly [paper](http://www.nature.com/articles/nbt.3893). For the purpose of this project, we will __analyze any bin that is estimated to be greater than 10% complete and contain less than 5% contamination__. The motivation behind these thresholds is to allow for the best chance at reconstructing the nitrogen cycle, without including *Frankenbacteria*.
 
 ### Taxonomic assignment
 
@@ -57,7 +57,7 @@ mash dist
 
 Now, although RefSeq (a non-redundant database of all genomes in GenBank) is truly awesome with tens-of-thousands of genomes, we are still unable to assign relatives to many bins. Can you think of why? There are 91,282 sketches in the database we are using and that is *after* filtering out the redundant genomes! Yes, there was just shy of 10,000 *E. coli* genomes in there before... 
 
-Therefore, we must turn to alignment-based methods for querying marker genes (16s rRNA) from our MAGs against a different reference database, SILVA. A LAST-formatted database is `/micb405/resources/project_2/db_SILVA_128_SSURef_tax_silva` (note: no extension!). LAST is similar to BLAST but orders of magnitude faster.
+Therefore, we must turn to alignment-based methods for querying marker genes (16s rRNA) from our MAGs against a different reference database, SILVA. A LAST-formatted database is `/micb405/resources/project_2/db_SILVA_128_SSURef_tax_silva` (note: no extension!). LAST is similar to BLAST but orders of magnitude faster. The executable is `lastal` and you will likely want to use `-f TAB` to output an easily-parseable tab-delimited file.
 
 By the end of this stage, the goal is to have a tabular file mapping a bin to a taxonomy, though there will invariably be some "Unknown"s. For example:
 
