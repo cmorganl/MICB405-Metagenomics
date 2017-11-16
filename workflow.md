@@ -57,7 +57,7 @@ mash dist
 
 Now, although RefSeq (a non-redundant database of all genomes in GenBank) is truly awesome with tens-of-thousands of genomes, we are still unable to assign relatives to many bins. Can you think of why? There are 91,282 sketches in the database we are using and that is *after* filtering out the redundant genomes! Yes, there was just shy of 10,000 *E. coli* genomes in there before... 
 
-Therefore, we must turn to alignment-based methods for querying marker genes (16s rRNA) from our MAGs against a different reference database, SILVA. A LAST-formatted database is `/micb405/resources/project_2/`. LAST is similar to BLAST but orders of magnitude faster.
+Therefore, we must turn to alignment-based methods for querying marker genes (16s rRNA) from our MAGs against a different reference database, SILVA. A LAST-formatted database is `/micb405/resources/project_2/db_SILVA_128_SSURef_tax_silva` (note: no extension!). LAST is similar to BLAST but orders of magnitude faster.
 
 By the end of this stage, the goal is to have a tabular file mapping a bin to a taxonomy, though there will invariably be some "Unknown"s. For example:
 
