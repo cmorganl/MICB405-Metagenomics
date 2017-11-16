@@ -43,7 +43,19 @@ checkm lineage_wf --tab_table -x .fasta --threads 4 --pplacer_threads 4 $BIN_DIR
 /mnt/nfs/sharknado/Connor_MICB405_sandbox/ProcessedData/checkM/Reference/$sid\_checkm_output/ >/mnt/nfs/sharknado/Connor_MICB405_sandbox/ProcessedData/checkM/Reference/$sid\_checkM_stdout.tsv
 ```
 
-By the end of this stage, your group will have MAGs also known as population genome bins for your metagenome and can easily separate the wheat from the chaff. You will probably be swimming in chaff so think hard about what contsitutes a good assembly [paper](http://www.nature.com/articles/nbt.3893). For the purpose of this project, we will __analyze any bin that is estimated to be greater than 10% complete and contain less than 5% contamination__. The motivation behind these thresholds is to allow for the best chance at reconstructing the nitrogen cycle, without including *Frankenbacteria*.
+By the end of this stage, your group will have MAGs also known as population genome bins for your metagenome and can easily separate the wheat from the chaff. You will probably be swimming in chaff so think hard about what contsitutes a good assembly [paper](http://www.nature.com/articles/nbt.3893). For the purpose of this project, we will __analyze any bin that is estimated to be greater than 10% complete and contain less than 5% contamination__. The motivation behind these thresholds is to allow for the best chance at reconstructing the nitrogen cycle, without including *Frankenbacteria*. Here is the number of bins that meet these thresholds for each sample:
+
+Depth | Number of bins to analyze | Total bins
+----- | ------------------------- | ----------
+SI072_LV_10m | 19 | 132 
+SI072_LV_100m | 13 | 131 
+SI072_LV_120m | 17 | 124 
+SI072_LV_135m | 24 | 124 
+SI072_LV_150m | 11 | 83 
+SI072_LV_165m | 23 | 118 
+SI072_LV_200m | 11 | 54 
+
+__Don't worry__ if your number do not match mine exactly!
 
 ### Taxonomic assignment
 
