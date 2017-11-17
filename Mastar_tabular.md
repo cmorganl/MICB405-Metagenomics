@@ -56,6 +56,7 @@ while read line; do accession=$( echo $line | awk '{ print $4 }'); bin=$( echo $
 
 At the end of these stages you should have a Mash output file like this:
 
+----- | ------------------------- | ---------- | -------- |
 Bacteria.Proteobacteria.Gammaproteobacteria.Oceanospirillales.OM182_clade.uncultured_gamma_proteobacterium                                                 | SI072_LV_100m.041 | 0.0121679 | 0            | 632/1000 |
 Bacteria.Proteobacteria.Gammaproteobacteria.unclassified Gammaproteobacteria.sulfur-oxidizing symbionts.Calyptogena okutanii thioautotrophic gill symbiont | SI072_LV_10m.005  | 0.243761  | 5.4271e-13   | 3/1000   |
 Bacteria.FCB group.Bacteroidetes/Chlorobi group.Bacteroidetes.Flavobacteriia.unclassified Flavobacteriia                                                   | SI072_LV_10m.008  | 0.0166683 | 0            | 544/1000 |
@@ -68,6 +69,7 @@ Archaea.TACK group.Thaumarchaeota.Nitrosopumilales.Nitrosopumilaceae.Candidatus 
 
 Your LAST classifications table should look like this:
 
+----- | -------------------------
 SI072_LV_100m.026 | Bacteria;Actinobacteria;Acidimicrobiia;Acidimicrobiales;Sva0996 marine group;uncultured actinobacterium                                                                 |
 SI072_LV_100m.041 | Bacteria;Proteobacteria;Gammaproteobacteria;Chromatiales;Chromatiaceae;Halochromatium;uncultured gamma proteobacterium                                                  |
 SI072_LV_100m.059 | Bacteria;Firmicutes;Bacilli;Lactobacillales;Enterococcaceae;Enterococcus;Enterococcus durans                                                                            |
