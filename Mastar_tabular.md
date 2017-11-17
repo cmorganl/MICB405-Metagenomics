@@ -12,7 +12,7 @@ Let's dissect this: [awk](https://linux.die.net/man/1/awk) is a streaming patter
 
 ## Mash filtering
 
-Like alignment tools, Mash will by default write multiple potential matches that meet whatever thresholds are specified. The most important thresholds affecting your output table (beside `-t` which I don't use) are `-v` and `-d`, determining the maximum p-value and maximum distance to be reported, respectively. Play around with them! I eventually settled on `-v 1E-8` which roughly translated into only matches exceeding 3 21-mers out of 1000 were reported. I ran my Mash command individually on both `/home/micb405/resources/project_2/refseq.genomes.k21s1000.msh` and `/home/micb405/resources/project_2/Saanich_QCd_SAGs_k21s1000.sig.msh` sketch databases. Here is a bash while loop that will run `mash dist` against each of your MAGs in GT10Complete_LT5Contam_MAGs_checkM.tsv (just the good stuff!).
+Like alignment tools, Mash will by default write multiple potential matches that meet whatever thresholds are specified. The most important thresholds affecting your output table (beside `-t` which I don't use) are `-v` and `-d`, determining the maximum p-value and maximum distance to be reported, respectively. Play around with them! I eventually settled on `-v 1E-8` which roughly translated into only matches exceeding 3 21-mers out of 1000 were reported. I ran my Mash command individually on both `/home/micb405/resources/project_2/refseq.genomes.k21s1000.msh` and `/home/micb405/resources/project_2/Saanich_QCd_SAGs_k21s1000.sig.msh` sketch databases. Here is a bash while loop that will run `mash dist` with each of your MAGs in GT10Complete_LT5Contam_MAGs_checkM.tsv against the RefSeq genomes sketch (just the good stuff!).
 
 ```bash
 while read line
@@ -25,6 +25,8 @@ if [ -f MaxBin/$sid/$bin.fasta ]
 fi
 done<GT90Complete_LT5Contam_MAGs_checkM.tsv >RefSeq_Mash_output.tsv
 ```
+
+Replace `/home/micb405/resources/project_2/refseq.genomes.k21s1000.msh` with `/home/micb405/resources/project_2/Saanich_QCd_SAGs_k21s1000.sig.msh` to find matches between your bins and the Saanich single-cell genomes.
 
 As you can see, there are many reference matches for each query (MAG). To select the best annotations you can again use awk. This command is adapted from a command on a great GitHub page that I frequent, [Stephen Turner's bash one-liners](https://github.com/stephenturner/oneliners). 
 
@@ -54,19 +56,19 @@ while read line; do accession=$( echo $line | awk '{ print $4 }'); bin=$( echo $
 
 At the end of these stages you should have a Mash output file like this:
 
-| Bacteria.Proteobacteria.Gammaproteobacteria.Oceanospirillales.OM182_clade.uncultured_gamma_proteobacterium                                                 | SI072_LV_100m.041 | 0.0121679 | 0            | 632/1000 |
-| Bacteria.Proteobacteria.Gammaproteobacteria.unclassified Gammaproteobacteria.sulfur-oxidizing symbionts.Calyptogena okutanii thioautotrophic gill symbiont | SI072_LV_10m.005  | 0.243761  | 5.4271e-13   | 3/1000   |
-| Bacteria.FCB group.Bacteroidetes/Chlorobi group.Bacteroidetes.Flavobacteriia.unclassified Flavobacteriia                                                   | SI072_LV_10m.008  | 0.0166683 | 0            | 544/1000 |
-| Bacteria.Terrabacteria group.Actinobacteria.Actinobacteria.Micrococcales.Microbacteriaceae.Leifsonia.Leifsonia xyli.Leifsonia xyli subsp. xyli             | SI072_LV_10m.034  | 0.243761  | 1.43878e-12  | 3/1000   |
-| Bacteria.Terrabacteria group.Actinobacteria.Acidimicrobiia.Acidimicrobiales.Acidimicrobiaceae.Ilumatobacter.Ilumatobacter coccineus                        | SI072_LV_10m.041  | 0.243761  | 1.45335e-11  | 3/1000   |
-| Bacteria.Proteobacteria.Gammaproteobacteria.Legionellales.Legionellaceae.Legionella                                                                        | SI072_LV_120m.013 | 0.243761  | 4.70704e-12  | 3/1000   |
-| Bacteria.Proteobacteria.Gammaproteobacteria.Legionellales.Legionellaceae.Legionella                                                                        | SI072_LV_135m.005 | 0.243761  | 4.41006e-12  | 3/1000   |
-| Archaea.TACK group.Thaumarchaeota.Nitrosopumilales.Nitrosopumilaceae.Candidatus Nitrosoarchaeum.Candidatus Nitrosoarchaeum koreensis                       | SI072_LV_135m.004 | 0.23011   | 2.11252e-17  | 4/1000   |
-| Archaea.TACK group.Thaumarchaeota.Nitrosopumilales.Nitrosopumilaceae.Candidatus Nitrosoarchaeum.Candidatus Nitrosoarchaeum koreensis                       | SI072_LV_150m.007 | 0.243761  | 9.76439e-13  | 3/1000   |
+Bacteria.Proteobacteria.Gammaproteobacteria.Oceanospirillales.OM182_clade.uncultured_gamma_proteobacterium                                                 | SI072_LV_100m.041 | 0.0121679 | 0            | 632/1000 |
+Bacteria.Proteobacteria.Gammaproteobacteria.unclassified Gammaproteobacteria.sulfur-oxidizing symbionts.Calyptogena okutanii thioautotrophic gill symbiont | SI072_LV_10m.005  | 0.243761  | 5.4271e-13   | 3/1000   |
+Bacteria.FCB group.Bacteroidetes/Chlorobi group.Bacteroidetes.Flavobacteriia.unclassified Flavobacteriia                                                   | SI072_LV_10m.008  | 0.0166683 | 0            | 544/1000 |
+Bacteria.Terrabacteria group.Actinobacteria.Actinobacteria.Micrococcales.Microbacteriaceae.Leifsonia.Leifsonia xyli.Leifsonia xyli subsp. xyli             | SI072_LV_10m.034  | 0.243761  | 1.43878e-12  | 3/1000   |
+Bacteria.Terrabacteria group.Actinobacteria.Acidimicrobiia.Acidimicrobiales.Acidimicrobiaceae.Ilumatobacter.Ilumatobacter coccineus                        | SI072_LV_10m.041  | 0.243761  | 1.45335e-11  | 3/1000   |
+Bacteria.Proteobacteria.Gammaproteobacteria.Legionellales.Legionellaceae.Legionella                                                                        | SI072_LV_120m.013 | 0.243761  | 4.70704e-12  | 3/1000   |
+Bacteria.Proteobacteria.Gammaproteobacteria.Legionellales.Legionellaceae.Legionella                                                                        | SI072_LV_135m.005 | 0.243761  | 4.41006e-12  | 3/1000   |
+Archaea.TACK group.Thaumarchaeota.Nitrosopumilales.Nitrosopumilaceae.Candidatus Nitrosoarchaeum.Candidatus Nitrosoarchaeum koreensis                       | SI072_LV_135m.004 | 0.23011   | 2.11252e-17  | 4/1000   |
+Archaea.TACK group.Thaumarchaeota.Nitrosopumilales.Nitrosopumilaceae.Candidatus Nitrosoarchaeum.Candidatus Nitrosoarchaeum koreensis                       | SI072_LV_150m.007 | 0.243761  | 9.76439e-13  | 3/1000   |
 
 Your LAST classifications table should look like this:
 
-| SI072_LV_100m.026 | Bacteria;Actinobacteria;Acidimicrobiia;Acidimicrobiales;Sva0996 marine group;uncultured actinobacterium                                                                 |
-| SI072_LV_100m.041 | Bacteria;Proteobacteria;Gammaproteobacteria;Chromatiales;Chromatiaceae;Halochromatium;uncultured gamma proteobacterium                                                  |
-| SI072_LV_100m.059 | Bacteria;Firmicutes;Bacilli;Lactobacillales;Enterococcaceae;Enterococcus;Enterococcus durans                                                                            |
-| SI072_LV_10m.005  | Bacteria;Bacteroidetes;Flavobacteriia;Flavobacteriales;Cryomorphaceae;uncultured;uncultured bacterium                                                                   |
+SI072_LV_100m.026 | Bacteria;Actinobacteria;Acidimicrobiia;Acidimicrobiales;Sva0996 marine group;uncultured actinobacterium                                                                 |
+SI072_LV_100m.041 | Bacteria;Proteobacteria;Gammaproteobacteria;Chromatiales;Chromatiaceae;Halochromatium;uncultured gamma proteobacterium                                                  |
+SI072_LV_100m.059 | Bacteria;Firmicutes;Bacilli;Lactobacillales;Enterococcaceae;Enterococcus;Enterococcus durans                                                                            |
+SI072_LV_10m.005  | Bacteria;Bacteroidetes;Flavobacteriia;Flavobacteriales;Cryomorphaceae;uncultured;uncultured bacterium                                                                   |
