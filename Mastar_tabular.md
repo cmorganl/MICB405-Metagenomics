@@ -1,4 +1,4 @@
-# Workflow generating summary figures from Mash and checkM outputs
+# Workflow for making sense of Mash, checkM and LAST outputs
 
 ## checkM filtering
 
@@ -19,9 +19,9 @@ while read line
 do 
 bin=$( echo $line | awk '{ print $1 }')
 sid=$( echo $bin | awk -F. '{ print $1 }')
-if [ -f MaxBin/$sid/$bin.fasta ]
+if [ -f MaxBin/$bin.fasta ]
     then
-    mash dist -v 1E-8 /home/micb405/resources/project_2/refseq.genomes.k21s1000.msh MaxBin/$sid/$bin.fasta
+    mash dist -v 1E-8 /home/micb405/resources/project_2/refseq.genomes.k21s1000.msh MaxBin/$bin.fasta
 fi
 done<GT90Complete_LT5Contam_MAGs_checkM.tsv >RefSeq_Mash_output.tsv
 ```
@@ -43,7 +43,7 @@ Its almost guaranteed in the case of non-human associated environmental genomics
 SILVA is one of many 16s databases available and we will use it to try to assign taxonomy to the remaining bins. 
 
 ```bash
-while read line; do bin=$( echo $line | awk '{ print $1 }'); sid=$( echo $bin | awk -F. '{ print $1 }'); if [ -f MaxBin/$sid/$bin.fasta ]; then best_hit=$(lastal -f TAB -P 4 /home/micb405/resources/project_2/db_SILVA_128_SSURef_tax_silva MaxBin/$sid/$bin.fasta | grep -v "^#" | head -1); echo $bin,$sid,$best_hit | sed 's/,\| /\t/g'; fi; done<GT10Complete_LT5Contam_MAGs_checkM.tsv >LAST_SILVA_alignments.BEST.tsv
+while read line; do bin=$( echo $line | awk '{ print $1 }'); sid=$( echo $bin | awk -F. '{ print $1 }'); if [ -f MaxBin/$bin.fasta ]; then best_hit=$(lastal -f TAB -P 4 /home/micb405/resources/project_2/db_SILVA_128_SSURef_tax_silva MaxBin/$bin.fasta | grep -v "^#" | head -1); echo $bin,$sid,$best_hit | sed 's/,\| /\t/g'; fi; done<GT10Complete_LT5Contam_MAGs_checkM.tsv >LAST_SILVA_alignments.BEST.tsv
 ```
 
 After looking in the output file you will see that there is NO TAXONOMY! What has happened is there are spaces in the header of each FASTA record in the database and LAST splits the header on the spaces and only uses the first as the reference name. This is unfortunate because these are totally useless to us humans, that is, without a mapping file! 
@@ -76,3 +76,5 @@ SI072_LV_100m.026 | Bacteria;Actinobacteria;Acidimicrobiia;Acidimicrobiales;Sva0
 SI072_LV_100m.041 | Bacteria;Proteobacteria;Gammaproteobacteria;Chromatiales;Chromatiaceae;Halochromatium;uncultured gamma proteobacterium                                                  |
 SI072_LV_100m.059 | Bacteria;Firmicutes;Bacilli;Lactobacillales;Enterococcaceae;Enterococcus;Enterococcus durans                                                                            |
 SI072_LV_10m.005  | Bacteria;Bacteroidetes;Flavobacteriia;Flavobacteriales;Cryomorphaceae;uncultured;uncultured bacterium                                                                   |
+
+These files are ready to be used in R.
