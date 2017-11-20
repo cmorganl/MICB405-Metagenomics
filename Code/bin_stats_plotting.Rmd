@@ -20,10 +20,10 @@ get_class <- function(string) {
   class <- gsub(x = class, pattern = "\\[", replacement = "")
   class <- gsub(x = class, pattern = "\\]", replacement = "")
   if (is.na(class)) {
-    return("Unclassified Bacteria")
+    return("Unclassified")
   }
   if ( nchar(class) == 0 ) {
-    return("Unclassified Bacteria")
+    return("Unclassified")
   }
   if (class == "Bacteria") {
     return("Unclassified Bacteria")
@@ -37,9 +37,9 @@ get_class <- function(string) {
 
 ```{r load_data}
 
-checkm_dat <- read.table("/home/connor/Desktop/MICB405_TAship/MICB405-Metagenomics/GT90Complete_LT5Contam_MAGs_checkM.tsv",
+HQcheckm_dat <- read.table("/home/connor/Desktop/MICB405_TAship/MICB405-Metagenomics/GT90Complete_LT5Contam_MAGs_checkM.tsv",
                          header = F, sep="\t")
-names(checkm_dat) <- c("BinId", "Marker_lineage", "# genomes", "# markers", "# marker sets", "0", "1", "2", "3", "4", "5+", "Completeness", "Contamination", "Strain_heterogeneity")
+names(HQcheckm_dat) <- c("BinId", "Marker_lineage", "# genomes", "# markers", "# marker sets", "0", "1", "2", "3", "4", "5+", "Completeness", "Contamination", "Strain_heterogeneity")
 last_class <- read.csv("/home/connor/Desktop/MICB405_TAship/MICB405-Metagenomics/LAST_SILVA_classifications.BEST.csv",
                        header = F)
 names(last_class) <- c("BinId", "Lineage")
@@ -47,15 +47,19 @@ mash_class <- read.table("/home/connor/Desktop/MICB405_TAship/MICB405-Metagenomi
                          header = F, sep="\t")
 names(mash_class) <- c("Lineage", "BinId", "Mash_distance", "p_value", "Matches")
 
+All_checkM_dat <- read.table("/home/connor/Desktop/MICB405_TAship/MICB405-Metagenomics/SI072_LV_135m_checkM_stdout.tsv",
+                             header=T, sep="\t", comment.char = '') %>% 
+  mutate(Lineage = gsub(pattern=" .*", '', Marker.lineage, perl = T))
+
 ```
 
 
 ```{r data_munging}
 
-master_table <- merge(checkm_dat, last_class, by = "BinId") %>% 
+master_table <- merge(HQcheckm_dat, last_class, by = "BinId") %>% 
   select(BinId, Completeness, Contamination, Lineage) %>% 
   group_by(Lineage) %>% 
-  mutate(class = get_class(Lineage))
+  mutate(Class = get_class(Lineage))
 
 ```
 
@@ -65,6 +69,9 @@ In this case we are only looking at the LAST annotations. The next logical thing
 ```{r plotting}
 
 ggplot(master_table, aes(x = Completeness, y = Contamination, col=class)) +
+  geom_point()
+
+ggplot(All_checkM_dat, aes(x= Completeness, y = Contamination, col=Lineage)) +
   geom_point()
 
 ```
