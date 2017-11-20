@@ -4,7 +4,7 @@ In this workflow, it is assumed that you have completed the assembly with MEGAHI
 For this step, you will align the FASTQ files you used for assembly to your contigs, calculate the RPKM for each contig,
 then use this output to find the average RPKM of your Metagenome-Assembled Genomes (MAGs).
 
-Throughout this example workflow, I will be using the 200m metagenome.
+Throughout this example workflow, I will be using the SI_072_150m metagenome.
 
 Estimated time for completion (1.5-2.5 hours)
 
@@ -61,5 +61,7 @@ And finally, to get the csv file you've been waiting for:
 -r /home/cmlang/ProcessedData/RPKM/SI072_LV_150m_DNA_RPKM.csv \
 -o /home/cmlang/ProcessedData/RPKM/SI072_LV_150m_MAG_RPKM.csv
 ```
+
+Now, please remove that SAM file!
 
 ### Fin.
