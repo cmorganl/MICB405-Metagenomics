@@ -13,8 +13,8 @@ I'm going to create a list containing all the assembly files I want to build Nx 
 all of these:
 
 ```bash
-ls MEGAHIT/*/*fa >megahit_assemblies_list.txt
-time while read line; do onx=$( echo $line | sed 's/.contigs.fa/_Nx.csv/g')
+cmlang@cmlang-ORCA:~/ProcessedData$ ls MEGAHIT/*/*fa >megahit_assemblies_list.txt
+cmlang@cmlang-ORCA:~/ProcessedData$ time while read line; do onx=$( echo $line | sed 's/.contigs.fa/_Nx.csv/g')
 /home/micb405/resources/project_2/getNx -i $line -o $onx -v
 done<megahit_assemblies_list.txt
 ```
@@ -58,7 +58,7 @@ The R script to plot these data is `/home/micb405/resources/project_2/Nx_curve_g
 and can be used like so:
 
 ```
-Rscript /home/micb405/resources/project_2/Nx_curve_generator.R MEGAHIT/*/*_Nx.csv
+cmlang@cmlang-ORCA:~/ProcessedData$ Rscript /home/micb405/resources/project_2/Nx_curve_generator.R MEGAHIT/*/*_Nx.csv
 ```
 
 Now, don't feel restricted to using the default ggplot2 rainbow colour palette! I encourage everyone to copy this
