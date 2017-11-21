@@ -31,7 +31,7 @@ Replace `/home/micb405/resources/project_2/refseq.genomes.k21s1000.msh` with `/h
 As you can see, there are many reference matches for each query (MAG). To select the best annotations you can again use awk. This command is adapted from a command on a great GitHub page that I frequent, [Stephen Turner's bash one-liners](https://github.com/stephenturner/oneliners). 
 
 ```bash
-cat RefSeq_Mash_output.tsv Saanich_Mash_output.tsv | sort -t$'\t' -k2,2 | awk '{ if(!x[$2]++) {print $0; dist=($3-1)} else { if($3<dist) print $0} }' >Mash_classifications.BEST.tsv 
+cat RefSeq_Mash_output.tsv Saanich_Mash_output.tsv | sort -t$'\t' -k2,3 | awk '{ if(!x[$2]++) {print $0; dist=($3-1)} else { if($3<dist) print $0} }' >Mash_classifications.BEST.tsv
 ```
 
 At this point there will have to be a lot of text editing to replace the genome identifiers with lineages. I'm sure there is a better way, I just haven't thought of it. You may have noticed that the first column in the Mash output (reference) is a fasta file (e.g. GCF_000010405.1_ASM1040v1_genomic.fna.gz). This is neither the name of an organism nor lends any lineage-specific information. At this point, we do not have a map between GenBank assembly ID (such as GCF_000010405.1) and taxonomic lineage. SO! Head over to NCBI's website and search for each of your GenBank IDs then replace them with their taxonomy (e.g. Bacteria; Proteobacteria; Gammaproteobacteria; unclassified Gammaproteobacteria; sulfur-oxidizing symbionts; Calyptogena okutanii thioautotrophic gill symbiont) in a text editor or (SIGH) excel...
