@@ -7,14 +7,32 @@ involved in the nitrogen cycle outlined in the [workflow markdown](https://githu
 The result of this workflow is a csv file with the Bin identifier, Gene, Prokka gene ID, and RPKM. This can then be easily
 plotted in ggplot to represent the abundance of each gene from each bin that contains a gene of interest.
 
+This workflow assumes you have functionally and taxonomically annotated your bins using Prokka,
+and have all 16 gene names (e.g., nosZ, norC, etc.) in nitrogen_cyclers.txt. This set of gene names will be referred to
+as "N-cycling genes". This term does not refer to all genes which are involved in metabolising Nitrogen!
+
 Estimated time for completion (1 - 1.5 hours)
 
 
 ## Creating the reference set (5 minutes)
 
+Step one is to find the names of the Prokka-annotated N-cycling genes. This information is contained within the
+tab-separated value (tsv) file and can be extracted by pattern matching (with `grep`) for the name of each N-cycling gene.
+
 ```bash
 while read line; do grep $line Prokka/Bins/SI072_LV_*/*tsv >>bin_nitrogen_cycler_genes.txt; done<nitrogen_cyclers.txt
 ```
+
+The lines containing the gene names were written to bin_nitrogen_cycler_genes.txt. Here are the first two lines:
+
+```
+Prokka/Bins/SI072_LV_100m.041/SI072_LV_100m.041.tsv:OCIHAJHB_01798	CDS	napA	1.7.99.4	Periplasmic nitrate reductase
+Prokka/Bins/SI072_LV_120m.013/SI072_LV_120m.013.tsv:NGLKKDPM_00530	CDS	napA	1.7.99.4	Periplasmic nitrate reductase
+```
+
+The reason we need to perform the above step is that the gene names are not present in Prokka's annotated fasta file (.ffn).
+ The next step is to search for each contig annotated as an N-cycling gene by its internal Prokka identifier;
+ this is the alphanumeric code following the file name, 'OCIHAJHB_01798' for the first sequence above.
 
 ```bash
 while read line
@@ -22,6 +40,9 @@ do ffn=$( echo $line | awk -F':' '{ print $1 }' | sed 's/.tsv/.ffn/g' )
 prefix=$( echo $line | awk '{ print $1 }' | awk -F':' '{ print $2 }' )
 grep "$prefix" $ffn; done<bin_nitrogen_cycler_genes.txt >bin_nitrogen_cycler_headers.txt
 ```
+
+bin_nitrogen_cycler_headers.txt contains the headers of all sequences that were annotated as an N-cycling gene. Concatenating all
+Prokka-annotated gene sequences together will make our collective lives easier for the next step:
 
 ```bash
 cat Prokka/Bins/SI072_LV_*/*ffn >tmp_All_bins.ffn
@@ -74,6 +95,7 @@ The file `bin_nitrogen_cycler_genes.txt` we generated earlier will be useful her
 
 ## Abundance of all N-cycling genes in the environment(!!)
 
-Now that you know the abundance of the genes annotated within your bins specifically in the environment, what about those genes that were not binned?
+Now that you know the abundance of the genes annotated within your bins specifically in the environment,
+what about those genes that were not binned?
 
 Stay tuned...
