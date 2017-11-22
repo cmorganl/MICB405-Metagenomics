@@ -13,7 +13,6 @@ as "N-cycling genes". This term does not refer to all genes which are involved i
 
 Estimated time for completion (1 - 1.5 hours)
 
-
 ## Creating the reference set (5 minutes)
 
 Step one is to find the names of the Prokka-annotated N-cycling genes. This information is contained within the

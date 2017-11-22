@@ -25,16 +25,18 @@ __Results__ (1000 words)
 __Discussion__ (1000 words)
  - Describe the pros/cons of using a Mash (or more generally, genome-based taxonomic assigners) compared to taxonomic assignment software using marker-genes.
  - State any challenges encountered (we know there will be some!) and troubleshooting (parameter or software changes) - briefly!
- - Relate the results back to the introduction and what is or is not sensical. For example, discuss how the biology relates to the geochemical state of the environment). How do the different population genome bins in your data set contribute to the nitrgoen cycle? Do they encode partial or complete pathways? How modular is the nitrogen cycle based on your data?
+ - Relate the results back to the introduction and what is or is not sensical. For example, discuss how the biology relates to the geochemical state of the environment). How do the different population genome bins in your data set contribute to the nitrogen cycle? Do they encode partial or complete pathways? How modular is the nitrogen cycle based on your data?
  - Additional questions worth pursuing further.
 
 __Figures and tables__ (≥4 with captions)
 Some recommended figures to include:
  - Geochemical gradients (temperature, salinity, nutrients (phosphate, silicate), nitrogen compounds (nitrate, nitrite, ammonia, nitrous oxide), oxygen and sulfide.  
- - scatter plot comparing contamination % (Y-axis) versus completion % (X-axis) betweenpopulation genome bins. Consider color coding the bins by taxonomic rank e.g. phylum, order, etc. Indicate high, medium and low contamination bins (see Connect for an example).
+ - scatter plot comparing contamination % (Y-axis) versus completion % (X-axis) between population genome bins.
+ Consider colour coding the bins by taxonomic rank e.g. phylum, order, etc.
+ Indicate high, medium and low contamination bins (see Connect for an example).
  - RPKM bubble-plot of each N-cycling gene versus taxonomy
  - Barplot with the number of taxa assigned by each method, using *Phylum* as a categorical variable
- - Small subunit ribsomal RNA (SSU or 16S rRNA) gene phylogenetic tree from those sequences identified (either by aligning to SILVA or using [EMIRGE](https://github.com/csmiller/EMIRGE))
+ - Small subunit ribosomal RNA (SSU or 16S rRNA) gene phylogenetic tree from those sequences identified by Prokka or using [EMIRGE](https://github.com/csmiller/EMIRGE))
  - Population structure diagram
 
 __References__ (>20)
