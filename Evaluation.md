@@ -13,8 +13,10 @@ __Introduction__ (750 words)
  - Provide relevant information regarding metagenomic approaches (data generation and application), pros, cons, and alternatives
 
 __Methods__ (750 words)
- - Reference the bash script(s) containing all commands. These are to be either hosted on a group member's GitHub page and/or emailed to Connor and I will upload them to the MICB405-Metagenomics GitHub page under `student_scripts/Group*/`.
- - Explain why each step was used, what the outputs are, etc. For example, metagenome assembly was used to build larger sequences (contigs) from the sequencing reads to reduce data size and redundancy, as well as inputs for binning. __Don't be silly and plagiarise this__.
+ - Reference the bash script(s) containing all commands.
+ These are to be either hosted on a group member's GitHub page and/or emailed to Connor and I will upload them to the MICB405-Metagenomics GitHub page under `student_scripts/Group*/`.
+ - Explain why each step was used, what the outputs are, etc.
+ For example, metagenome assembly was used to build larger sequences (contigs) from the sequencing reads to reduce data size and redundancy, as well as inputs for binning. __Don't be silly and plagiarise this__.
  - Explain any potential deviations from the default parameters or the suggested workflow.
 
 __Results__ (1000 words)
@@ -25,7 +27,10 @@ __Results__ (1000 words)
 __Discussion__ (1000 words)
  - Describe the pros/cons of using a Mash (or more generally, genome-based taxonomic assigners) compared to taxonomic assignment software using marker-genes.
  - State any challenges encountered (we know there will be some!) and troubleshooting (parameter or software changes) - briefly!
- - Relate the results back to the introduction and what is or is not sensical. For example, discuss how the biology relates to the geochemical state of the environment). How do the different population genome bins in your data set contribute to the nitrogen cycle? Do they encode partial or complete pathways? How modular is the nitrogen cycle based on your data?
+ - Relate the results back to the introduction and what is or is not sensical.
+ For example, discuss how the biology relates to the geochemical state of the environment).
+ How do the different population genome bins in your data set contribute to the nitrogen cycle?
+  Do they encode partial or complete pathways? How modular is the nitrogen cycle based on your data?
  - Additional questions worth pursuing further.
 
 __Figures and tables__ (≥4 with captions)
@@ -38,6 +43,7 @@ Some recommended figures to include:
  - Barplot with the number of taxa assigned by each method, using *Phylum* as a categorical variable
  - Small subunit ribosomal RNA (SSU or 16S rRNA) gene phylogenetic tree from those sequences identified by Prokka or using [EMIRGE](https://github.com/csmiller/EMIRGE))
  - Population structure diagram
+ (for example Krona from Phylosift or a [16S phylogenetic tree](https://github.com/cmorganl/MICB405-Metagenomics/blob/master/Community_phylogeny.md))
 
 __References__ (>20)
 Necessary citations include:
