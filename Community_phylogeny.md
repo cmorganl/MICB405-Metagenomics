@@ -48,6 +48,53 @@ Then, launch `FastaSubsetter.py` accoring to the usage (invoked by `/home/micb40
 There! bin_16S_genes.ffn contains all 16S ribosomal RNA genes detected by Prokka.
 We are now ready for multiple sequence alignment.
 
+## [OPTIONAL] Next level community analyses (4 hours)
+
+[EMIRGE](https://github.com/csmiller/EMIRGE) is a tool for assembling 16S sequences from your metagenomic reads.
+The first step is to perform the EMIRGE analysis on your raw reads. I used the shell script `run_EMIRGE.sh` in "Code/"
+to generate the file `EMIRGE/SI072_LV_100m_DNA/SI072_LV_100m_DNA.emirge.fasta` which contains all 16S sequences for the
+100m metagenome.
+
+The headers in EMIRGE's fasta output do not contain the entire header of the sequence they are most related to, though,
+and this is probably for good reason since they are not identical to the reference sequence! However, we would like to include
+taxonomic information since it is probably accurate at least to Phylum.
+To recruit the original headers we will again use `grep`, `awk`, and `sed` to replace the SILVA accessions with taxonomic lineages.
+The following bash commands are used to create a .csv file mapping headers to their respective taxa.
+
+```bash
+grep "^>" EMIRGE/SI072_LV_100m_DNA/SI072_LV_100m_DNA.emirge.fasta >EMIRGE/SI072_LV_100m_DNA/headers.txt
+while read line
+do sid=$( echo $line | awk -F'|' '{ print $2 }' | gawk -F. '{ print $1 }' )
+tax=$( grep $sid SILVA_128_SSURef_taxa_headers.txt | sed 's/.* Bacteria;/Bacteria;/g' | sed 's/.* Archaea;/Archaea;/g' )
+echo $line,$tax
+done<EMIRGE/SI072_LV_100m_DNA/headers.txt >EMIRGE/SI072_LV_100m_DNA/header_map.csv
+```
+
+The next step will involve using `sed` to clean up the headers in the EMIRGE's output fasta file so there are no
+redundancies and the taxonomy will remain after multiple alignment, which comes down to replacing spaces with underscores.
+
+```bash
+ while read line
+  do
+  sid=$( echo $line | awk -F'|' '{ print $2 }' | gawk -F. '{ print $1 }' )
+  prior=$(echo $line | awk -F= '{ print $2 }' | gawk '{ print $1 }')
+  tax=$( grep $sid SILVA_128_SSURef_taxa_headers.txt | sed 's/.* Bacteria;/Bacteria;/g' | sed 's/.* Archaea;/Archaea;/g' | sed 's/.* Eukaryota;/Eukaryota;/g')
+  if [ -z "$tax" ]; then tax=Unknown; fi
+  sed -i "s/$line/>$sid\_Prior=$prior\_$tax/g" EMIRGE/SI072_LV_165m_DNA/SI072_LV_165m_DNA.emirge_taxa.fasta
+  done<EMIRGE/SI072_LV_165m_DNA/headers.txt
+```
+
+The final operation is to concatenate the 16S sequences found in each of your bins with the EMIRGE sequences, which represent
+all 16S sequences identified in the metagenome.
+This way, the phylogenetic tree is able to contextualize your bins within the broader microbial community.
+
+```bash
+cat bin_16S_genes.ffn EMIRGE/SI072_LV_165m_DNA/SI072_LV_165m_DNA.emirge_taxa.fasta >community_16S.ffn
+```
+
+_NOTE_: the remaining workflow assumes this step was not performed. To adapt these commands to work with the combined 16S
+sequences file, replace bin_16S_genes.ffn with community_16S.ffn.
+
 ## Multiple alignment (10 minutes)
 
 While there are an overwhelming number of options available to generate a multiple alignment, and perhaps some that are better,
@@ -68,37 +115,7 @@ sed -i "s/$prefix/$bin/g" bin_16S_genes.mfa
 done<bin_16S_genes.txt
 ```
 
-## [OPTIONAL] Next level community analyses (4 hours)
-
-[EMIRGE](https://github.com/csmiller/EMIRGE) is a tool for assembling 16S sequences from your metagenomic reads.
-The first step is to perform the EMIRGE analysis on your raw reads. I used the shell script `run_EMIRGE.sh` in "Code/"
-to generate the file `EMIRGE/SI072_LV_100m_DNA/SI072_LV_100m_DNA.emirge.fasta` which contains all 16S sequences for the
-100m metagenome.
-
-```bash
-grep "^>" EMIRGE/SI072_LV_100m_DNA/SI072_LV_100m_DNA.emirge.fasta >EMIRGE/SI072_LV_100m_DNA/headers.txt
-while read line
-do sid=$( echo $line | awk -F'|' '{ print $2 }' | gawk -F. '{ print $1 }' )
-tax=$( grep $sid SILVA_128_SSURef_taxa_headers.txt | sed 's/.* Bacteria;/Bacteria;/g' | sed 's/.* Archaea;/Archaea;/g' )
-echo $line,$tax
-done<EMIRGE/SI072_LV_100m_DNA/headers.txt >EMIRGE/SI072_LV_100m_DNA/header_map.csv
-```
-
-The next step will involve using sed to clean up the headers so there are no redundancies and the taxonomy will remain
-after multiple alignment, which comes down to replacing spaces with underscores.
-
-```bash
- while read line
-  do
-  sid=$( echo $line | awk -F'|' '{ print $2 }' | gawk -F. '{ print $1 }' )
-  prior=$(echo $line | awk -F= '{ print $2 }' | gawk '{ print $1 }')
-  tax=$( grep $sid SILVA_128_SSURef_taxa_headers.txt | sed 's/.* Bacteria;/Bacteria;/g' | sed 's/.* Archaea;/Archaea;/g' | sed 's/.* Eukaryota;/Eukaryota;/g')
-  if [ -z "$tax" ]; then tax=Unknown; fi
-  sed -i "s/$line/>$sid\_Prior=$prior\_$tax/g" EMIRGE/SI072_LV_165m_DNA/SI072_LV_165m_DNA.emirge_taxa.fasta
-  done<EMIRGE/SI072_LV_165m_DNA/headers.txt
-```
-
-## Phylogenetic Tree construction (5 minutes)
+## Phylogenetic Tree construction (1 minute)
 
 Once you have your input multiple alignment (for example, bin_16S_genes.mfa), generating a phylogenetic tree is simple.
 We can use FastTree since it is installed on the server:
