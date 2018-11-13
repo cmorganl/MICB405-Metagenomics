@@ -1,0 +1,79 @@
+---
+title: "Saanich Inlet Binning Analysis"
+author: "Connor Morgan-Lang"
+date: "November 16, 2017"
+output: html_document
+---
+
+```{r boilerplate}
+
+rm(list = ls())
+
+library(ggplot2)
+library(dplyr)
+library(reshape2)
+
+get_class <- function(string) {
+  # King;Phylip;Came;Over;For a;Glass of;Scotch
+  char_var <- as.character(string)
+  class <- unlist(strsplit(x = char_var, split = ';', fixed = TRUE))[3]
+  class <- gsub(x = class, pattern = "\\[", replacement = "")
+  class <- gsub(x = class, pattern = "\\]", replacement = "")
+  if (is.na(class)) {
+    return("Unclassified")
+  }
+  if ( nchar(class) == 0 ) {
+    return("Unclassified")
+  }
+  if (class == "Bacteria") {
+    return("Unclassified Bacteria")
+  }
+  else {
+    return(class)
+  }
+}
+
+```
+
+```{r load_data}
+
+HQcheckm_dat <- read.table("/home/connor/Desktop/MICB405_TAship/MICB405-Metagenomics/GT90Complete_LT5Contam_MAGs_checkM.tsv",
+                         header = F, sep="\t")
+names(HQcheckm_dat) <- c("BinId", "Marker_lineage", "# genomes", "# markers", "# marker sets", "0", "1", "2", "3", "4", "5+", "Completeness", "Contamination", "Strain_heterogeneity")
+last_class <- read.csv("/home/connor/Desktop/MICB405_TAship/MICB405-Metagenomics/LAST_SILVA_classifications.BEST.csv",
+                       header = F)
+names(last_class) <- c("BinId", "Lineage")
+mash_class <- read.table("/home/connor/Desktop/MICB405_TAship/MICB405-Metagenomics/Mash_classifications.BEST.tsv",
+                         header = F, sep="\t")
+names(mash_class) <- c("Lineage", "BinId", "Mash_distance", "p_value", "Matches")
+
+All_checkM_dat <- read.table("/home/connor/Desktop/MICB405_TAship/MICB405-Metagenomics/SI072_LV_135m_checkM_stdout.tsv",
+                             header=T, sep="\t", comment.char = '') %>% 
+  mutate(Lineage = gsub(pattern=" .*", '', Marker.lineage, perl = T))
+
+```
+
+
+```{r data_munging}
+
+master_table <- merge(HQcheckm_dat, last_class, by = "BinId") %>% 
+  select(BinId, Completeness, Contamination, Lineage) %>% 
+  group_by(Lineage) %>% 
+  mutate(Class = get_class(Lineage))
+
+```
+
+
+In this case we are only looking at the LAST annotations. The next logical thing to do is also merge the Mash classification table. Also, be warned that by default, `merge` will not include rows without identical identifiers (in this case 'BinId's). This means that bins that were not annotated by LAST are not included in master_table. 
+
+```{r plotting}
+
+ggplot(master_table, aes(x = Completeness, y = Contamination, col=class)) +
+  geom_point()
+
+ggplot(All_checkM_dat, aes(x= Completeness, y = Contamination, col=Lineage)) +
+  geom_point()
+
+```
+
+

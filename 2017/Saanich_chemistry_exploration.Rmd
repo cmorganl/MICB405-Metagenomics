@@ -1,0 +1,31 @@
+---
+title: "Exploring the Saanich Inlet chemistry data"
+author: "Connor Morgan-Lang"
+date: "November 20, 2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(ggplot2)
+library(dplyr)
+
+chem_dat <- read.csv("/home/connor/Desktop/MICB405_TAship/MICB405-Metagenomics/Saanich_TimeSeries_Chemical_DATA.csv",
+                     header=TRUE,
+                     na.strings = c("NAN", "ND")) %>% 
+  filter(Cruise == 72)
+
+```
+
+## Let's explore!
+
+```{r}
+
+ggplot(chem_dat, aes(x=NO3, y=Depth)) +
+  geom_point() +
+  geom_line(aes(x=Mean_NH4)) +
+  geom_line(aes(x=NO3)) +
+  ylim(200,0)
+  
+```

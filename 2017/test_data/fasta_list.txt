@@ -1,0 +1,12 @@
+test_data/SI072_LV_10m_MaxBin.001.fasta
+test_data/SI072_LV_10m_MaxBin.010.fasta
+test_data/SI072_LV_10m_MaxBin.011.fasta
+test_data/SI072_LV_10m_MaxBin.012.fasta
+test_data/SI072_LV_10m_MaxBin.013.fasta
+test_data/SI072_LV_10m_MaxBin.014.fasta
+test_data/SI072_LV_10m_MaxBin.015.fasta
+test_data/SI072_LV_10m_MaxBin.016.fasta
+test_data/SI072_LV_10m_MaxBin.017.fasta
+test_data/SI072_LV_10m_MaxBin.018.fasta
+test_data/SI072_LV_10m_MaxBin.019.fasta
+test_data/SI072_LV_10m_MaxBin.101.fasta
