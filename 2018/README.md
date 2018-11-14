@@ -62,8 +62,10 @@ The taxonomic lineages for the bacterial and archaeal MAGs are found in `Saanich
 
 ### What you need to do
 
-Groups are expected to generate transcriptional abundance information to better understand the transcriptional activity of genes of interest for specific pathways. Metatranscriptomes have been copied to `/projects/micb405/resources/project_2/2018/Metatranscriptomes`. Using BWA MEM as in tutorial and project 1, create SAM files for every cruise at your assigned depth. The FASTA file used for building a BWA index and the output SAM file can then be used to create a comma-separated value (csv) file with RPKM abundances for each sequence in the FASTA file using the `rpkm` executable in Code.
- [Prokka](https://github.com/tseemann/prokka) should be used to predict open-reading frames (ORFs) in the MAGs you select. 
+Groups are expected to generate transcriptional abundance information to better understand the transcriptional activity of genes of interest for specific pathways. 
+
+[Prokka](https://github.com/tseemann/prokka) should be used to predict open-reading frames (ORFs) in the MAGs you select. 
+
 The next step is to annotate the sequences with KEGG Orthology (KO) numbers. These KO numbers correspond to gene sequences with rich, hierarchical attributions assigned to them thanks to the fine folks at the Kyoto Encyclopedia of Genes and Genomes (KEGG). This can be accomplished either by using a pairwise alignment tool (e.g. BLAST) to match homologous sequences in a KEGG database we have access to with your ORFs or use the [KEGG Automatic Annotation Server](https://www.genome.jp/kegg/kaas/) (KAAS).
 Combining the RPKM abundance information and the KO numbers assigned to your sequences, visualise the metabolic map of your MAGs using [pathview](http://pathview.r-forge.r-project.org/) in R.
 
