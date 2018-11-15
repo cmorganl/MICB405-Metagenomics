@@ -11,6 +11,12 @@ The project will be assessed by the following criteria:
 
 The word counts for each section are reccommended, can be adjusted by +/- 200 words, but the topics within must be discussed!
 
+__Abstract__ (250 word max.)
+ - Consisely summarize the major results and implications of the report
+
+__Importance__ (120 word max.)
+ - Lay explanation of the significance of the research performed to the field of environmental microbiology
+
 __Introduction__ (1250 words)
  - Introduce Saanich Inlet as a model ecosystem for studying microbial community responses to ocean deoxygenation e.g. seasonal cycles, relevant biogeochemistry, pervious studies, etc. 
  - Provide relevant information regarding metagenomic approaches (data generation and application), pros, cons, and alternatives
