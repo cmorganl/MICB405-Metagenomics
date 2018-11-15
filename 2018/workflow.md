@@ -7,32 +7,52 @@ The data you will be working with on the orca server in `/projects/micb405/resou
 1. Metagenomic in all of the SaanichInlet\_\*m directories
 2. Metatranscriptomic data in the `Metatranscriptomes` directory. These FASTQ files should __not be copied__ to your individual or group directories.
 
-Metagenomic data are vast and varied! Generally, these are the result of a metagenomic binning experiment to generate metagenome-assembled genomes (MAGs) using the `bin\_multi.sh` shell script. 
+Metagenomic data are vast and varied! Generally, these are the result of a metagenomic binning experiment to generate metagenome-assembled genomes (MAGs) using the `bin_multi.sh` shell script. 
 There are numerous genome assembly software tools available but just a handful that are commonly used to assemble metagenomes.
 The one we used is MEGAHIT due to its memory-efficiency [succinct de Bruijn graph](https://link.springer.com/chapter/10.1007/978-3-642-33122-0_18)
 (data structure used to store and traverse k-mers), rapid assembly algorithms, and high-quality results.
 To construct representative bins for each of the 6 depths that are sampled in all the 6 cruises, the metagenome assemblies were concatenated into a single FASTA file, contigs shorter than 1500bp were removed and then the assembly was 'deduplicated'. This deduplication is necessary since a large protion of the genomic sequence across the several assemblies is identical or very similar. Specifically, sequences greater than 98% similar were identified and the longest representative sequence was retained. The result of these steps is in the `*_gt1500_dedup.fasta`.
 Like assembly, there are a multiplicity of "binners" to choose from. We used MetaBAT 2 to perform this multi-sample binning experiment, leveraging both the tetranucleotide frequencies of each contig (this is basically a census of all the 4-mers) and differential abundance. This differential abundance is highly valuable information that can be used for teasing apart similar genomic content that actually originates from different organisms. The assumption is sequences that are derived from the same genome (or population) will increase and decrease in abundance __together__.
 __Note:__ 'bin', 'MAG', and 'population genome' are all synonymous and are therefore used interchangably.
-The MAGs you should use for further analyses are in the directory `SaanichInlet\_$DEPTH/MetaBAT2\_SaanichInlet\_$DEPTH/MedQPlus\_MAGs/`.
+The MAGs you should use for further analyses are in the directory `SaanichInlet_$DEPTH/MetaBAT2_SaanichInlet_$DEPTH/MedQPlus_MAGs/`.
 
-After binning the quality-controlled metagenomic reads from each sample of the corresponding depth were aligned to the binned contigs. The resulting SAM files were used for calculating RPKM of each contig for each sample. The csv file containing these data is in SaanichInlet\_$DEPTH/SaanichInlet\_$DEPTH\_binned.rpkm.csv. These data can be used for determining the relative abundance of a contig and/or an entire MAG (since the contigs were renamed with the format SampleName\_MAGNumber\_ContigNumber you can sum by MAG to yield a total RPKM).
+After binning the quality-controlled metagenomic reads from each sample of the corresponding depth were aligned to the binned contigs. The resulting SAM files were used for calculating RPKM of each contig for each sample. The csv file containing these data is in SaanichInlet\_$DEPTH/SaanichInlet\_$DEPTH_binned.rpkm.csv. These data can be used for determining the relative abundance of a contig and/or an entire MAG (since the contigs were renamed with the format SampleName_MAGNumber_ContigNumber you can sum by MAG to yield a total RPKM).
 
 checkM is a popular software tool for determining the completeness and contamination of single-cell genome assemblies, MAGs, and reference genomes.
  Read the [paper](http://genome.cshlp.org/content/25/7/1043.full.pdf+html) to learn how it works... and what the hazards may be. A pseudo-command is:
 
 ```bash
-checkm lineage_wf --tab_table -x .fasta --threads 4 --pplacer_threads 4 $BIN_DIR checkm_output/ >$sid\_checkM_stdout.tsv
+checkm lineage_wf \
+--tab_table \
+-x .fasta \
+--threads 4 \
+--pplacer_threads 4 \
+$BIN_DIR checkm_output/ >$sid\_checkM_stdout.tsv
 ```
 
-These outputs are in the files: SaanichInlet\_$DEPTHm/MetaBAT2\_SaanichInlet\_$DEPTHm/MetaBAT2\_SaanichInlet\_$DEPTHm\_min1500\_checkM\_stdout.tsv
+These outputs are in the files: SaanichInlet\_$DEPTHm/MetaBAT2_SaanichInlet\_$DEPTHm/MetaBAT2_SaanichInlet\_$DEPTHm\_min1500_checkM_stdout.tsv
 Information contained in these files are valuable for assessing which MAGs are worth investigating and those that are so incomplete or contaminated that pursuing these would be a waste of time. You will probably be swimming in chaff so think hard about what constitutes a good MAG and refer to this here [standards paper](http://www.nature.com/articles/nbt.3893). 
-We have removed all low-quality MAGs and archived them in LowQ\_MAGs.tar.gz. From here on you will only be analyzing the medium- and high-quality MAGs.
+We have removed all low-quality MAGs and archived them in LowQ_MAGs.tar.gz. From here on you will only be analyzing the medium- and high-quality MAGs.
 
 Finally, the taxonomic lineage was determined using the Genome-taxonomy Database's software toolkit, [gtdbtk](https://github.com/Ecogenomics/GTDBTk). 
 This approach relies on a massive reference tree of tens-of-thousands of sequenced microbial genomes. The tree itself was inferred from concatenated gene alignments for >100 conserved single-copy marker genes. The first step is to find homologous genes in each MAG and adding the concatenated sequence (hereon referred to as query sequence) into the MSA. These query sequences are then mapped onto the reference tree. 
 The position they are mapped to constrains their taxonomic lineage (say if the members of the clade it maps to are all *Lactobacillus* then the query sequence may be assigned to a taxonomy between Lacto and generally *Bacteria*) and several phylogenetic calculations are then used to confidently assign a taxonomy to each query sequence. 
-The taxonomic assignments are in gtdbtk\_output/gtdbtk.\*.classification\_pplacer.tsv, one each for bacterial and archaeal classifications.
+The taxonomic assignments are in gtdbtk_output/gtdbtk.\*.classification_pplacer.tsv, one each for bacterial and archaeal classifications.
+
+## Guiding analyses
+
+To dig a little deeper into these data we offer 4 guiding questions, one of which your group is to select and attempt to answer:
+
+1. [BIOCHEM] Identify 3-5 MAGs of interest. How do they "eat" and "breath"? 
+The goal of this is to understand the lifestyle and metabolic niche of these organisms.
+2. [GENOMICS] What is the genomic landscape of related MAGs?
+For example, comparing the genomes of all the Epsilonproteobacteria MAGs of sufficient quality at their assigned depth.
+3. [STATS] How is the community transcriptionally responding to change?
+Mapping the transcriptional profile across time for all MAGs in the community, observing seasonal trends in differential expression for particular pathways (example finding could be transcriptional activity for the Nitrogen-cycling genes is greatest for the Proteobacteria in the summer months).
+4. [BIOCHEM] How much do Saanich Inlet microbial communities work together?
+Investigating the distributed (or not) metabolism of the carbon, nitrogen, and sulphur cycles by identifying the microbes participating at each step of relevant pathways.
+
+The methods outlined below will help you answer the question your group is interested in. If you are *really* interested in some other aspect of the community that can be answered using data provided I encourage you to discuss it with the teaching team! We can probably find a way for it to be your group's guiding question.
 
 ## Next steps
 
@@ -72,18 +92,28 @@ These files are now ready to be loaded into R!
 
 Groups are expected to generate transcriptional abundance information to better understand the transcriptional activity of genes of interest for specific pathways.
  This is necessary since presence of a gene does not always mean the gene is being transcribed and translated. So we are going to use RNA-Seq data to get one step closer. Although it would be ideal to sequence a metaproteome to actually determine what genes are expressed this is more difficult and expensive.
-Metatranscriptome FASTQ files have been copied to `/projects/micb405/resources/project\_2/2018/Metatranscriptomes/`. Using `bwa mem` as in tutorial and project 1, create SAM files for every cruise at your assigned depth. The FASTA file used for building a BWA index and the output SAM file can then be used to create a comma-separated value (csv) file with RPKM abundances for each sequence in the FASTA file using the `rpkm` executable in Code.
+Metatranscriptome FASTQ files have been copied to `/projects/micb405/resources/project\_2/2018/Metatranscriptomes/`. Using `bwa mem` as in tutorial and project 1, create SAM files for every cruise at your assigned depth. The FASTA file used for building a BWA index and the output SAM file can then be used to create a comma-separated value (csv) file with RPKM abundances for each sequence in the FASTA file using the `rpkm` executable provided:
+
+```
+/projects/micb405/resources/project_2/2018/rpkm \
+-c ~/ProcessedData/Prokka_output/SaanichInlet_MAG_ORFs.ffn \
+-a ~/ProcessedData/MetaT_alignments/SI042_SaanichInlet_MAG_ORFs.sam
+-o ~/ProcessedData/RPKM_outputs/SI042_SaanichInlet_MAG_ORFs_RPKM.csv
+```
 
 Normalization is required to account for variance in sequencing coverage and sequence lengths.
 Very simply, longer sequences are aligned to more often than short sequences. To do this, we use [RPKM](https://www.nature.com/articles/nmeth.1226), a method that was first introduced in analyzing RNA-Seq data.
+
 At this point it would be a good idea to ensure you understand why we can use the reads to estimate abundance of genes, contigs, or whole genomes.
 
-Abundances can be estimated for both [MAGs](https://github.com/cmorganl/MICB405-Metagenomics/blob/master/MAG_abundance_workflow.md) and
- [N-cycling genes](https://github.com/cmorganl/MICB405-Metagenomics/blob/master/Estimating_N-cycling_gene_abundance.md)
-
-### Figure generation and other analyses
+### Figure generation
 
 Alright, from these analyses you should be ready to load the resulting csv and tsv files into R for generating figures.
 
+To get visualize the quality of your bins (from the perspective of completeness and contamination) you will need the checkM_stdout.tsv and the classification_pplacer.tsv files mentioned above. If you want to be all-stars and add the abundance layer, you will need the provided RPKM files that contain normalized genomic abundances for all binned contigs - this will probably comprise only but a small portion of the entire microbial community!
 
+Pathway analyses with [pathview](http://bioconductor.org/packages/release/bioc/vignettes/pathview/inst/doc/pathview.pdf) will require the metatranscriptome RPKM files and the KAAS output(s), as well as a file mapping the Prokka sample IDs to MAGs that you are more familiar with... Prokka :sigh:
 
+## Fin.
+
+More analyses, tips and tricks may be added as we explore these samples together - stay tuned!
