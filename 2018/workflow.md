@@ -112,8 +112,9 @@ Alright, from these analyses you should be ready to load the resulting csv and t
 
 To get visualize the quality of your bins (from the perspective of completeness and contamination) you will need the checkM_stdout.tsv and the classification_pplacer.tsv files mentioned above. If you want to be all-stars and add the abundance layer, you will need the provided RPKM files that contain normalized genomic abundances for all binned contigs - this will probably comprise only but a small portion of the entire microbial community!
 
-Pathway analyses with [pathview](http://bioconductor.org/packages/release/bioc/vignettes/pathview/inst/doc/pathview.pdf) will require the metatranscriptome RPKM files and the KAAS output(s), as well as a file mapping the Prokka sample IDs to MAGs that you are more familiar with... Prokka :sigh:
+Pathway analyses with [pathview](http://bioconductor.org/packages/release/bioc/vignettes/pathview/inst/doc/pathview.pdf) will require the metatranscriptome RPKM files and the KAAS output(s), as well as a file mapping the Prokka sample IDs to MAGs that you are more familiar with... Prokka :pouting_cat:
 
 ## Fin.
 
 More analyses, tips and tricks may be added as we explore these samples together - stay tuned!
+
