@@ -311,25 +311,14 @@ fi
 ##################################################
 
 
-file_list=$(gawk -F"\t" '{ if ($12>50 && $13<10) print $1 }' $checkm_stats | sed -r 's/$/.fa /g')
 ###################################################################################################
-# Run prokka on each HQB (added by Ryan 10.31.2018) using the GTDB-tk Kingdom annotation
+# Run prokka - as shown in MICB 405
 ###################################################################################################
-prokka_output_dir=$output_dir/prokka_annos
-IFS=' ' read -r -a array <<< "$file_list"
-for f in "${array[@]}";
+for f in $output_dir/MedQPlus_MAGs/*fa
 do
-	bin_num=$(cut -d'.' -f2 <<< $f)
-	kingy=$(grep -w "$bin_num" $output_dir/gtdbtk_output/gtdbtk.*.classification_pplacer.tsv | gawk '{ print $2 }' | gawk -F';' '{ print $1 }' | sed 's/d__//g')
-	printf "[STATUS] Annotating $f with ${kingy}l info using Prokka... "
-	prokka \
-	--kingdom $kingy \
-	--outdir $prokka_output_dir/$bin_num/ \
-	--force \
-	$output_dir/$f
-	printf "done.\n"
+    sid=$( basename $f | sed 's/.fa//g' )
+    tax=$(grep -w $sid $output_dir/gtdbtk_output/gtdbtk.*.classification_pplacer.tsv | awk '{ print $2 }' | awk -F";" '{ print $1 }' | sed 's/d__//g')
+    echo $sid,$tax
+    prokka --kingdom $tax --outdir $prokka_output_dir/$bin_num/ --force $f
 done
-
 ##################################################
-
-
