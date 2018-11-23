@@ -47,8 +47,7 @@ To dig a little deeper into these data we offer 4 guiding questions, one of whic
 The goal of this is to understand the lifestyle and metabolic niche of these organisms.
 2. [GENOMICS] What is the genomic landscape of related MAGs?
 For example, comparing the genomes of all the Epsilonproteobacteria MAGs of sufficient quality at their assigned depth.
-3. [STATS] How is the community transcriptionally responding to change?
-Mapping the transcriptional profile across time for all MAGs in the community, observing seasonal trends in differential expression for particular pathways (example finding could be transcriptional activity for the Nitrogen-cycling genes is greatest for the Proteobacteria in the summer months).
+3. ~~[STATS] How is the community transcriptionally responding to change? Mapping the transcriptional profile across time for all MAGs in the community, observing seasonal trends in differential expression for particular pathways (example finding could be transcriptional activity for the Nitrogen-cycling genes is greatest for the Proteobacteria in the summer months).~~
 4. [BIOCHEM] How much do Saanich Inlet microbial communities work together?
 Investigating the distributed (or not) metabolism of the carbon, nitrogen, and sulphur cycles by identifying the microbes participating at each step of relevant pathways.
 
