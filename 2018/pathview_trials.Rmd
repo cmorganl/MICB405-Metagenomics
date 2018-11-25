@@ -13,6 +13,8 @@ Before you begin loading, transforming, and playing with data we will need to lo
 library(tidyr)
 library(dplyr)
 library(pathview)
+library(RColorBrewer)
+library(knitr)
 ```
 
 Now we are going to read our tabular files. First is KO annotation tables (query.ko.txt) then the rpkm file. I'm using rename to assign names to each of the columns as these do not have headers.
@@ -21,7 +23,7 @@ Now we are going to read our tabular files. First is KO annotation tables (query
 ko <- read.table("~/Desktop/MICB405_TAship/MICB405-Metagenomics/2018/testing/SaanichInlet_150m_MAG_ORFs.KAAS.tsv") %>% 
   dplyr::rename(orf = V1) %>% 
   dplyr::rename(ko = V2)
-rpkm <- read.table("~/Desktop/MICB405_TAship/MICB405-Metagenomics/2018/testing/SI042_SaanichInlet_150m_MAG_ORFs_rpkm.txt", sep=',') %>% 
+metat_rpkm <- read.table("~/Desktop/MICB405_TAship/MICB405-Metagenomics/2018/testing/SI042_SaanichInlet_150m_MAG_ORFs_rpkm.txt", sep=',') %>% 
   dplyr::rename(orf = V1) %>% 
   dplyr::rename(rpkm = V2)
 
@@ -34,12 +36,39 @@ bac_class <- read.table("~/Desktop/MICB405_TAship/MICB405-Metagenomics/2018/test
 gtdb_dat <- rbind(arc_class, bac_class) %>% 
   dplyr::rename(mag = V1) %>% 
   separate(V2, sep=';', into=c("Kingdom", "Phylum", "Class", "Order", "Family", "Genus", "Species"))
+
+checkm_dat <- read.table("~/Desktop/MICB405_TAship/MICB405-Metagenomics/2018/testing/MetaBAT2_SaanichInlet_150m_min1500_checkM_stdout.tsv",
+                         header=TRUE,
+                         sep="\t",
+                         comment.char = '') %>% 
+  dplyr::rename(mag = Bin.Id) %>% 
+  dplyr::select(mag, Completeness, Contamination)
+
+# Due to a bug in the renaming script we have to rename the bins. Its a bit hacky but works using tidyverse functions
+metag_rpkm <- read.table("~/Desktop/MICB405_TAship/MICB405-Metagenomics/2018/testing/SaanichInlet_150m_binned.rpkm.csv", header=T, sep=',') %>% 
+  mutate(Sequence = gsub('m_', 'm.', Sequence)) %>% 
+  mutate(Sequence = gsub('Inlet_', 'Inlet.', Sequence)) %>% 
+  separate(col=Sequence, into=c("mag", "contig"), sep='_', extra="merge") %>% 
+  group_by(Sample, mag) %>% 
+  summarise(g_rpkm = sum(RPKM)) %>% 
+  mutate(mag = gsub('Inlet.', 'Inlet_', mag))
+
 ```
 
 Here are the tables in their current form, ready for merging by `orf`:
 ```{r, echo=FALSE}
-head(ko)
-head(rpkm)
+head(ko) %>% kable()
+head(metat_rpkm) %>% kable()
+```
+
+We can also determine the number of Phyla present in our bins, and how many MAGs are representing each. Of course, you can do this for all the taxonomic ranks. I'm also going to remove the Genus and Species fields since these are probably not relevant to your analysis (if so, then skip that step) and not very trustworthy given the whole binning procedure.
+```{r diversity}
+gtdb_dat %>% 
+  group_by(Phylum) %>% 
+  summarise(count = n_distinct(mag)) %>% 
+  kable()
+
+gtdb_dat <- dplyr::select(gtdb_dat, mag, Kingdom, Phylum, Class, Order, Family)
 ```
 
 Next steps are to join these two tables and some basic transformations to make things a bit easier for `pathview`. 
@@ -51,19 +80,48 @@ __NOTE__: If your are dealing with RPKM values from multiple cruises (in this ex
 If you are interested in visualizing the variability in transcription of a single MAG across the cruises you may also want to `filter` for your MAG of interest then group by `ko` and `cruise`. It all depends on what question you want to answer so be mindful here!
 
 ```{r, arrange, warning=FALSE, message=FALSE}
-ko_rpkm <- left_join(ko, rpkm, by="orf") %>% 
+
+rpkm_dat <- left_join(ko, metat_rpkm, by="orf") %>%
   separate(orf, into=c("prokka_id", "orf_id")) %>% # Split the Prokka ORF names into MAG identifier and ORF number for joining
   left_join(prokka_mag_map, by="prokka_id") %>% 
-  left_join(gtdb_dat, by="mag")
+  left_join(gtdb_dat, by="mag") %>% 
+  left_join(checkm_dat, by="mag")
 
-t_rpkm <- ko_rpkm %>% 
-  filter(Phylum == "p__Proteobacteria") %>% 
+# If you also wanted to add the RPKM abundance values from the metagenome:
+  # left_join(metag_rpkm, by="mag")
+
+head(rpkm_dat) %>% kable()
+
+```
+
+Depending on your research question, you may want to subset your data by just the MAGs with the greatest completeness and least contamination, or by a taxonomy. Or, if you are wondering what the metabolic potential is of the entire community (well, at least the portion that was binned) you may want to aggregate the KO numbers by a taxonomic rank. 
+
+__NOTE__: some sort of aggregation or subsetting is probably essential with `pathview` since it has an upper limit of the number of samples that can be visualized... and by sample I mean MAG, cruise, or taxon. Really, this comes down to the number of columns in the final matrix you pass off to `pathview`. However, I recently found that updating your R version to 3.5.1 and installing the latest version of `pathview` increases this number to some as of yet unknown limit!
+
+```{r subsetting, warning=FALSE, message=FALSE}
+
+# Subset by taxon
+ko_rpkm <- rpkm_dat %>%
+  filter(Phylum %in% c("p__Proteobacteria", "p__Nanoarchaeota", "p__Thermoplasmatota")) %>%
   group_by(mag, ko) %>% 
-  summarise(total = sum(rpkm)) %>% 
-  spread(key = mag, value = total)
+  summarise(t_rpkm = sum(rpkm)) %>% 
+  spread(key = mag, value = t_rpkm)
 
-pv_mat <- dplyr::select(t_rpkm, -ko)
-rownames(pv_mat) <- t_rpkm$ko
+# Subset by completeness and contamination
+ko_rpkm <- rpkm_dat %>% 
+  filter(Completeness >= 90 & Contamination < 5) %>% 
+  group_by(mag, ko) %>% 
+  summarise(t_rpkm = sum(rpkm)) %>% 
+  spread(key = mag, value = t_rpkm)
+
+# Aggregate by a taxonomy, still summing RPKM of each KO number. You could use mean() instead.
+ko_rpkm <- rpkm_dat %>%
+  group_by(Class, ko) %>% 
+  summarise(t_rpkm = sum(rpkm)) %>% 
+  spread(key = Class, value = t_rpkm)
+
+pv_mat <- dplyr::select(ko_rpkm, -ko)
+rownames(pv_mat) <- ko_rpkm$ko
 
 ```
 
@@ -71,10 +129,16 @@ As an example, we can view the nitrogen metabolism capabilities of our MAGs. To 
 
 We can also view the dataframe that is generated by `pathview`. Unfortunately it is not that interesting or useful.
 
+I've also spiced up our scale at the top with some help from [colorbrewer2](http://colorbrewer2.org/#type=sequential&scheme=BuGn&n=3). I highly suggest visiting this website whenever you're searching for a colour palette! Conveniently, there is an `RColorBrewer` library that you can use to automatically apply built-in and custom colour palettes in your `ggplot` visualizations.
+
 ```{r, pathviewing, warning=FALSE, message=FALSE}
 
 # Nitrogen metabolism
 pv.out <- pathview(gene.data = pv_mat,
+                   limit = list(gene = c(0,10)),
+                   low = list(gene = "#91bfdb"),
+                   mid = list(gene = "#ffffbf"),
+                   high = list(gene = "#fc8d59"),
                    species = "ko",
                    pathway.id="00910",
                    kegg.dir = "~/Desktop/MICB405_TAship/MICB405-Metagenomics/2018/")
@@ -84,6 +148,8 @@ pv.out <- pathview(gene.data = pv_mat,
 
 
 Here is a file that pathview automatically writes to your `kegg.dir` directory.
+
+__NOTE__: If the files are not showing up in your `kegg.dir` directory, they are probably being written elsewhere on your laptop, probably in the current working directory of R. You can change this directory by using `setwd()` and providing it the path to where it should write the files.
 
 !["An example nitrogen metabolism wiring diagram derived from Saanich Inlet MAGs. There are no negative RPKM values and therefore the lowest value is 0. Vertical red bars indicate some MAGs are actively transcirbing genes involved in disimilatory nitrate reduction, denitrification and nitrification."](/home/connor/Desktop/MICB405_TAship/MICB405-Metagenomics/2018/ko00910.pathview.multi.png)
 

@@ -49,7 +49,7 @@ The goal of this is to understand the lifestyle and metabolic niche of these org
 For example, comparing the genomes of all the Epsilonproteobacteria MAGs of sufficient quality at their assigned depth.
 3. ~~[STATS] How is the community transcriptionally responding to change? Mapping the transcriptional profile across time for all MAGs in the community, observing seasonal trends in differential expression for particular pathways (example finding could be transcriptional activity for the Nitrogen-cycling genes is greatest for the Proteobacteria in the summer months).~~
 4. [BIOCHEM] How much do Saanich Inlet microbial communities work together?
-Investigating the distributed (or not) metabolism of the carbon, nitrogen, and sulphur cycles by identifying the microbes participating at each step of relevant pathways.
+Investigating the distributed (or not) metabolism of the carbon, nitrogen, OR sulphur cycles by identifying the microbes participating at each step of relevant pathways. One of the three terminal-electron acceptors should be selected based on the geochemical properties of the environment. For example, sulphur would be a bad choice for 10m.
 
 The methods outlined below will help you answer the question your group is interested in. If you are *really* interested in some other aspect of the community that can be answered using data provided I encourage you to discuss it with the teaching team! We can probably find a way for it to be your group's guiding question.
 
