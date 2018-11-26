@@ -47,8 +47,9 @@ __Discussion__ (1000 words)
  - State any challenges encountered (we know there will be some!) and troubleshooting (parameter or software changes) - briefly!
 
 __Figures and tables__ (≥4 with captions)
-Some recommended figures to include:
- - Geochemical gradients (temperature, salinity, nutrients (phosphate, silicate), nitrogen compounds (nitrate, nitrite, ammonia, nitrous oxide), oxygen and sulfide.  
+Some recommended (not required!) figures to include:
+ - Geochemical gradients for nutrients (phosphate, silicate), nitrogen compounds (nitrate, nitrite, ammonia, nitrous oxide), oxygen and/or sulfur compounds.
+These are depth-dependent.
  - scatter plot comparing contamination % (Y-axis) versus completion % (X-axis) between population genome bins.
  Consider colour coding the bins by taxonomic rank e.g. phylum, order, etc.
  Indicate high, medium and low contamination bins (see Canvas for an example).
