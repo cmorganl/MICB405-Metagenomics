@@ -38,10 +38,8 @@ __Results__ (1000 words)
  - Report of the relevant results from your group's selected analysis
 
 __Discussion__ (1000 words)
- - Relate the results back to the introduction and what is or is not sensible.
- For example, discuss how the biology relates to the geochemical state of the environment).
- How do the different population genome bins in your data set contribute to the nitrogen cycle?
-  Do they encode partial or complete pathways? How modular is the nitrogen cycle based on your data?
+ - Relate the biological results back to the introduction and what is or is not sensible based on the geochemical state of the environment.
+ How do the different population genome bins in your data set contribute to the metabolic pathways you investigated? (e.g. denitrification, dissimilatory sulfate reduction and oxidation). Do they encode partial or complete pathways (i.e. do your data support a distributed pathway)?
  - Discuss your reasoning behind the steps you took to answer your group's specific question.
  - Additional questions worth pursuing further.
  - State any challenges encountered (we know there will be some!) and troubleshooting (parameter or software changes) - briefly!
@@ -53,7 +51,7 @@ These are depth-dependent.
  - scatter plot comparing contamination % (Y-axis) versus completion % (X-axis) between population genome bins.
  Consider colour coding the bins by taxonomic rank e.g. phylum, order, etc.
  Indicate high, medium and low contamination bins (see Canvas for an example).
- - RPKM bubble-plot of each Nitrogen/Sulphur-cycling gene versus taxonomy
+ - RPKM bubble-plot of genes in a pathway versus taxonomy
  - Pathview pathway diagram 
 
 __References__ (>20)
